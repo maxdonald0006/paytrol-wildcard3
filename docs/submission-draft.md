@@ -27,7 +27,10 @@ Small businesses and operations teams that want a second check before a person s
 - The demo API accepts payTrol JSON and is not a platform-signed task handler. The separate Agent Games agent rules require HMAC for registered task agents; do not claim that integration unless implemented and tested.
 
 ## Reviewer links
-- Demo: [add the deployed `workers.dev` base URL]
-- Repository: [add public GitHub URL]
-- Agent endpoint (optional): [add the deployed base URL plus `/api/agent`]
-- Optional on-chain proof reference: [leave blank; no zkVerify or blockchain submission has been made]
+- Demo UI: [Open payTrol](https://paytrol-wildcard-demo.maxdonald.workers.dev/)
+- Public repository: https://github.com/maxdonald0006/paytrol-wildcard3
+- Agent endpoint (optional): `POST https://paytrol-wildcard-demo.maxdonald.workers.dev/api/agent`
+- Health check: [GET /health](https://paytrol-wildcard-demo.maxdonald.workers.dev/health)
+- On-chain proof reference: none; no zkVerify or blockchain submission has been made.
+
+The live HTTPS demo was smoke-tested: `GET /`, `GET /health`, and `GET /api/scenarios` returned HTTP 200. A synthetic example `POST /api/agent` returned HTTP 200 with a READY result and all ten checks passing. This endpoint accepts payTrol demo JSON; it is not an Agent Games HMAC-signed task handler.

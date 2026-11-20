@@ -4,6 +4,13 @@ payTrol is a deterministic, no-money-moves demo agent. It checks a proposed cont
 
 > **Simulation only.** payTrol does not connect to bank accounts, send or approve real payments, or confirm that an external payment record is true. **READY** means only “eligible to continue to a human approver.”
 
+## Live links
+
+- **Demo UI:** [Open payTrol](https://paytrol-wildcard-demo.maxdonald.workers.dev/)
+- **Agent endpoint:** `POST https://paytrol-wildcard-demo.maxdonald.workers.dev/api/agent` (accepts payTrol demo JSON; not an Agent Games HMAC task handler)
+- **Health check:** [GET /health](https://paytrol-wildcard-demo.maxdonald.workers.dev/health)
+- **Source repository:** [maxdonald0006/paytrol-wildcard3](https://github.com/maxdonald0006/paytrol-wildcard3)
+
 ## What the demo checks
 
 The rules engine evaluates ten checks:
@@ -95,13 +102,13 @@ Example request:
 
 The API returns the verdict, policy snapshot, check-by-check reasons, and SHA-256 checksum. Inputs are evaluated in memory and are not saved; duplicate checks compare against fixed synthetic history only.
 
-## Free public HTTPS deployment
+## Live public HTTPS deployment
 
-The signed-in Wildcard form (checked 2026-11-17) marks **Agent Endpoint optional**. If supplied, it asks for a reachable HTTPS URL with the **full handler path** and says off-chain agents may leave it blank. For payTrol, the intended reviewer API is `POST https://<your-worker>.workers.dev/api/agent`; the browser demo is at the base URL `/`.
+The Cloudflare Worker is deployed at `https://paytrol-wildcard-demo.maxdonald.workers.dev/`. The signed-in Wildcard form (checked 2026-11-17) marks **Agent Endpoint optional**; if supplied, it asks for a reachable HTTPS URL with the **full handler path**. For payTrol, use the base URL for the browser demo and `POST https://paytrol-wildcard-demo.maxdonald.workers.dev/api/agent` for the optional reviewer endpoint.
 
 This project includes a Cloudflare Workers adapter (`src/worker.mjs`) and configuration (`wrangler.jsonc`). It serves the built `dist` directory as static assets and handles `/health`, `/api/scenarios`, `POST /api/agent`, and the compatible API aliases. The browser proof is generated locally; the Worker only runs the existing deterministic demo checks. Cloudflare's published Workers Free allowance is 100,000 Worker requests per day and 10 ms CPU per invocation; static assets are free. Keep the account on the Free plan and check its usage limits. See [Cloudflare pricing](https://developers.cloudflare.com/workers/platform/pricing/) and [limits](https://developers.cloudflare.com/workers/platform/limits/).
 
-After creating/signing into your own Cloudflare account, use a terminal in the project root with Node.js 20.3 or newer:
+To redeploy or update the Worker under your Cloudflare account, use a terminal in the project root with Node.js 20.3 or newer:
 
 ```bash
 npm run worker:dry-run
@@ -109,7 +116,7 @@ npx --yes wrangler@4.86.0 login
 npm run worker:deploy
 ```
 
-Approve the sign-in directly on Cloudflare; do not share passwords or tokens. Wrangler will print the new `workers.dev` base URL. Put that base URL plus `/api/agent` in the Wildcard **Agent Endpoint** field; put the base URL itself in **Additional Links** so judges can open the UI. The project has not been deployed to Cloudflare, so there is no permanent public URL to submit.
+Approve the sign-in directly on Cloudflare; do not share passwords or tokens. Wrangler prints the `workers.dev` base URL after deployment. The current public deployment was smoke-tested: `GET /`, `GET /health`, and `GET /api/scenarios` returned HTTP 200; a synthetic `POST /api/agent` returned HTTP 200 with a READY result and all ten checks passing. For the Wildcard form, put the demo base URL in **Additional Links** and the full `/api/agent` URL in **Agent Endpoint** if you choose to provide it. This endpoint accepts payTrol demo JSON; it is not an Agent Games HMAC-signed task handler.
 
 The Worker uses a fixed synthetic policy snapshot dated 2026-11-17 12:00 UTC so separate edge instances give the same demo decisions; it stores no customer inputs and needs no platform secret. Its endpoint accepts the payTrol demo JSON format. It is **not** an Agent Games HMAC task handler. The general platform rules still require HMAC-signed messages and task-ID idempotency for agents registered to receive platform tasks; the Wildcard form's optional endpoint field does not describe that protocol. Do not claim platform-task compatibility unless a separate adapter is implemented and tested.
 
@@ -119,5 +126,5 @@ The Worker uses a fixed synthetic policy snapshot dated 2026-11-17 12:00 UTC so 
 - There is no bank, accounting, invoice-storage, or payment-provider integration.
 - The demo does not perform human approval or move funds.
 - The SHA-256 receipt is a checksum; the local proof only establishes that the included circuit's constraints hold for supplied inputs.
-- No proof has been submitted to zkVerify; no blockchain verification or deployment has occurred.
+- No proof has been submitted to zkVerify or verified on-chain, and no smart contract has been deployed. The Cloudflare demo deployment is separate from blockchain deployment.
 - The API is a prototype and must not be used to authorize real payments.

@@ -31,8 +31,10 @@
 
 ## Deployment and publication
 
-- Cloudflare Workers Free remains the selected no-cost static/API option. `wrangler.jsonc` now points to the Vite `dist/` output. The Worker handles only the deterministic demo API; browser-side proof generation is not performed in the Worker.
-- The Worker is not an Agent Games HMAC task handler. No Cloudflare deployment has occurred.
-- GitHub destination remains `https://github.com/maxdonald0006/paytrol-wildcard`. No authenticated push has occurred; the repository had previously appeared empty, and no GitHub connector was available. Do not claim publication until a successful push is verified.
-- A live local preview process is currently running on port 4175 (`paytrol-zk-demo-89e4cb9b`); this is temporary and not a public deployment.
+- The Cloudflare Workers demo is publicly deployed at `https://paytrol-wildcard-demo.maxdonald.workers.dev/`; `wrangler.jsonc` targets the Vite `dist/` output. Browser-side proof generation remains local to the user's browser.
+- Live reviewer URLs: demo `https://paytrol-wildcard-demo.maxdonald.workers.dev/`; health `https://paytrol-wildcard-demo.maxdonald.workers.dev/health`; optional Wildcard endpoint `POST https://paytrol-wildcard-demo.maxdonald.workers.dev/api/agent`.
+- Public smoke test passed: `GET /`, `GET /health`, and `GET /api/scenarios` returned HTTP 200. A synthetic `POST /api/agent` returned HTTP 200 and READY with all ten checks passing.
+- The API accepts payTrol demo JSON and is not an Agent Games HMAC-signed task handler. The demo is simulation-only and does not authorize or send payments.
+- Public repository: `https://github.com/maxdonald0006/paytrol-wildcard3`.
+- No proof has been submitted to zkVerify or a blockchain; no smart contract has been deployed.
 - Preserve scope: synthetic data only, no real money, bank access, live customer data, payment execution, or paid services.
