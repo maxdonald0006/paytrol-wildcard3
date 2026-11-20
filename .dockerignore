@@ -1,0 +1,9 @@
+.git
+node_modules
+dist
+zk/**/target
+coverage
+.env
+.env.*
+*.log
+.DS_Store
