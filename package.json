@@ -1,0 +1,30 @@
+{
+  "name": "paytrol-wildcard",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "description": "A deterministic payout preflight agent demo for zkVerify Agent Games Wildcard.",
+  "scripts": {
+    "build": "vite build",
+    "start": "npm run build && node server.mjs",
+    "test": "node --test",
+    "check": "node --check server.mjs && node --check src/worker.mjs && node --check src/proof-inputs.mjs && node --check src/paytrol-proof.mjs && node --check public/app.js && node --check vite.config.js && node --test",
+    "proof:compile": "node scripts/compile-circuit.mjs",
+    "proof:smoke": "node scripts/proof-smoke.mjs",
+    "worker:dev": "npm run build && npx --yes wrangler@4.86.0 dev",
+    "worker:dry-run": "npm run check && npm run build && npx --yes wrangler@4.86.0 deploy --dry-run",
+    "worker:deploy": "npm run check && npm run build && npx --yes wrangler@4.86.0 deploy"
+  },
+  "engines": {
+    "node": ">=18"
+  },
+  "devDependencies": {
+    "@aztec/bb.js": "3.0.3",
+    "@noir-lang/acvm_js": "1.0.0-beta.18",
+    "@noir-lang/noir_js": "1.0.0-beta.18",
+    "@noir-lang/noirc_abi": "1.0.0-beta.18",
+    "buffer": "6.0.3",
+    "vite": "6.4.1",
+    "vite-plugin-node-polyfills": "0.28.0"
+  }
+}

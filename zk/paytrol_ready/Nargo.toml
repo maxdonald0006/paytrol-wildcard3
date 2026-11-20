@@ -1,0 +1,3 @@
+[package]
+name = "paytrol_ready"
+type = "bin"
